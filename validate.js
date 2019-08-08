@@ -297,7 +297,9 @@ function run(ast, { max = 1000, scalarCost = 1, objectCost = 0, listFactor = 10 
 
   // objectCost: 1, listFactor: 20
   // (a(not root) * 1 + a.a1a + a.a1b(not root) * 1 + a.a1b.b1a + a.a1b.b1b) +
-  // + (arr(not root but has an array) * 1 * 20 + arr.arr1.name * 10 + arr.arr2.name * 10 + arr.arr2.id * 10)
+  // + (arr(not root) * 1 + arr.arr1(not root but has an array) * 1 * 20 + arr.arr1.name * 20
+  // + arr.arr2(not root but has an array) * 1 * 20 + arr.arr2.name * 20 + arr.arr2.id * 20)
+  // = 5 + (1 + 100) = 106
 
   // objectCost: 2, listFactor: 30
   // (a(not root) * 1 + a.a1a + a.a1b(not root) * 1 + a.a1b.b1a + a.a1b.b1b) +
@@ -309,7 +311,7 @@ function run(ast, { max = 1000, scalarCost = 1, objectCost = 0, listFactor = 10 
     run(ast, {
       max: v,
       objectCost: i
-      // listFactor: 10 * (i + 1)
+      listFactor: 10 * (i + 1)
     });
   });
 }
