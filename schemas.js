@@ -13,23 +13,27 @@ const typeDefs = `
     a1b: B1
   }
 
-  type Test {
-    t: String!
+  type Arr1 {
+    name: String!
   }
 
-  type Org {
-    name: String
-    test: Test!
+  type Arr2 {
+    name: String!
+    id: Int!
+  }
+
+  type Arr {
+    arr1: [Arr1]
+    arr2: [Arr2]
   }
 
   type Query {
     a: A1
-    users: [A1]
-    orgs: [Org]
+    arr: Arr
   }
 `;
 
-const user = {
+const obj = {
   a1a: 'a1a',
   a1b: {
     b1a: 'b1a',
@@ -37,19 +41,24 @@ const user = {
   }
 };
 
-const orgs = [
-  {
-    test: {
-      t: 'yes'
-    }
-  }
-];
+const arr = {
+  arr1: [...new Array(10)].map((_, i) => {
+    return {
+      name: `name_${i}`
+    };
+  }),
+  arr2: [...new Array(10)].map((_, i) => {
+    return {
+      name: `name_${i}`,
+      id: `id_${i}`
+    };
+  })
+};
 
 const resolvers = {
   Query: {
-    a: () => user,
-    users: () => [user],
-    orgs: () => orgs
+    a: () => obj,
+    arr: () => arr
   }
 };
 
