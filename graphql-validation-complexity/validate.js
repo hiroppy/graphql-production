@@ -3,7 +3,7 @@
 const { equal } = require('assert');
 const { parse, validate } = require('graphql');
 const { createComplexityLimitRule } = require('graphql-validation-complexity');
-const { schema } = require('./schemas');
+const { schema } = require('../schemas');
 
 function run(ast, { max = 1000, scalarCost = 1, objectCost = 0, listFactor = 10 }) {
   const errors = validate(schema, ast, [
