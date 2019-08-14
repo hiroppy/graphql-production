@@ -323,3 +323,29 @@ function run(ast, { max = 1000, scalarCost = 1, objectCost = 0, listFactor = 10 
 // Field: 1
 // root: scalarCost * 1
 // not root: objectCost * 1
+// list: listFactor * 10
+
+// e.g.
+
+// query {
+//   a {       # * objectCost
+//     a1a     # * scalarCost
+//     a1b {   # * objectCost
+//       b1a   # * scalerCost
+//       b1b   # * scalerCost
+//     }
+//   }
+//   arr {     # * objectCost
+//     arr1 {  # * objectCost * listFactor
+//       name  # listFactor
+//     }
+//     arr2 {  # objectCost * listFactor
+//       name  # listFactor
+//       id    # listFactor
+//     }
+//   }
+// }
+
+// a * objectCost + a.a1a * scalarCost + a.a1b * objectCost + a.a1b.b1a * scalerCost + a.a1b.b1b * scalerCost
+// + arr * objectCost + arr.arr1 * objectCost * listFactor + arr.arr1.name * listFactor
+// + arr.arr2 * objectCost * listFactor + arr.arr2.name * listFactor + arr.arr2.id * listFactor
